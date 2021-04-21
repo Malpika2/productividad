@@ -10,5 +10,5 @@ export const TareaContainer = () => {
         },1000)
     }, [])
 
-    return <Tarea key="1" countDown={timeRemaining} />
+    return <Tarea key="1" tarea={timeRemaining} />
 }

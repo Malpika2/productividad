@@ -13,16 +13,15 @@ function App() {
   return<>
       <Container fluid className="p-4">
         <Row>
-          <h1 className="text-center col-8">Aplicación de productividad</h1>
-          <Col xs={3}> 
+          <h1 className="text-center col-10">Aplicación de productividad</h1>
+          <Col xs={2}> 
             <Button variant="primary" onClick={() => setModalShow(true)}>
                 <BsPlusSquareFill/> Registar tarea
             </Button>
           </Col>
           {/* <RegistrarTareaConteiner className="col-3"/> */}
       <Col xs={7}>
-          <h3>Tarea activa:</h3>
-          <TareaContainer />
+        <TareasPendientesContainer />
       </Col>
       <Col xs={5}>
           <h4 className="text-center">Tareas completadas</h4>
@@ -53,7 +52,6 @@ function App() {
               </tbody>
           </Table>
       </Col>
-      <TareasPendientesContainer />
       </Row>
       <RegistrarTareaConteiner 
         show={modalShow}
