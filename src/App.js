@@ -6,6 +6,7 @@ import { Tarea } from "./components/Tarea";
 import { Container, Row, Col, Table, Button} from 'react-bootstrap';
 import { BsPlusSquareFill } from 'react-icons/bs';
 import { useState } from 'react';
+import { TareasPendientesContainer } from './containers/TareasPendientesContainer';
 function App() {
   const [modalShow, setModalShow] = useState(false);
 
@@ -52,15 +53,7 @@ function App() {
               </tbody>
           </Table>
       </Col>
-      <Col xs={12}>
-          <h3>Tareas pendientes:</h3>
-          
-          <Tarea key="2" countDown={0} />
-          <Tarea key="3" countDown={0} />
-          <Tarea key="4" countDown={0} />
-          <Tarea key="5" countDown={0} />
-          <Tarea key="6" countDown={0} />
-      </Col>
+      <TareasPendientesContainer />
       </Row>
       <RegistrarTareaConteiner 
         show={modalShow}
