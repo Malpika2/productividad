@@ -1,9 +1,17 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Modal, Form, Col, Button, InputGroup, Alert } from 'react-bootstrap';
 
 
 export const RegistrarTarea = (props) => {
-    const { setduration, handleduration, duration, onSubmit, show, onHide, handlesubmit, register, errors } = props;
+    const { setduration, handleduration, duration, onSubmit, show, onHide, handlesubmit, register, errors,title,tarea=null } = props;
+    useEffect(() => {
+        if(tarea!==null){
+            const minutes = ~~(tarea.duracion/60);
+            const seconds = tarea.duracion%60;
+            setduration({minutes:minutes,seconds:seconds});
+        }   
+    }, [])
+    
     return (<Modal
         show={show}
         onHide={onHide}
@@ -14,18 +22,18 @@ export const RegistrarTarea = (props) => {
         <Form onSubmit={handlesubmit(onSubmit)}>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    REGISTRAR TAREA
+                    {title}
             </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form.Group controlId="tituloTarea">
                     <Form.Label>Titulo</Form.Label>
-                    <Form.Control type="text" placeholder="Titulo de la tarea " {...register("titulo", { required: true })}  />
+                    <Form.Control type="text" placeholder="Titulo de la tarea " {...register("titulo", { required: true })} defaultValue={tarea!==null? tarea.titulo : ''} readOnly={tarea!==null} />
                     {errors.titulo && <Alert variant='danger'> El título es lo más importante</Alert>}
                 </Form.Group>
                 <Form.Group controlId="descripcionTarea">
                     <Form.Label>Descripción</Form.Label>
-                    <Form.Control type="text" placeholder="Descripción de la tarea " {...register("descripcion", { required: true })} />
+                    <Form.Control type="text" placeholder="Descripción de la tarea " {...register("descripcion", { required: true })} defaultValue={tarea!==null? tarea.descripcion : ''}/>
                     {errors.descripcion && <Alert variant='danger'>No olvides agregar la descripción</Alert>}
                 </Form.Group>
                 <Form.Label htmlFor="">Duración:</Form.Label>

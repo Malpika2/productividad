@@ -24,24 +24,25 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
       setDuration({ minutes: min, seconds: sec });
     }
 	};
+  // Registro de tarea
     const onSubmit = ({titulo, descripcion}) => {
-      console.log({titulo, descripcion, minutes:duration.minutes, seconds:duration.seconds});
+       
         axios.post('http://localhost:4000/tareas', 
         {titulo, descripcion, minutes:duration.minutes, seconds:duration.seconds})
           .then(function (response) {
             props.onHide();
             reset();
             setDuration({ minutes: 0, seconds: 0 });
-
+            props.initTareas();
           })
           .catch(function (error) {
             props.onHide();
             reset();
             setDuration({ minutes: 0, seconds: 0 });
-
           });
     }
 	return <RegistrarTarea  
+                title='REGISTRAR TAREA'
                 show={props.show}
                 onHide={props.onHide} 
                 setduration={setDuration} 
@@ -51,6 +52,5 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
                 handlesubmit={handleSubmit}
                 register = {register}
                 errors= {errors}
-                reset
             />;
 };
