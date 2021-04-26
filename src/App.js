@@ -1,30 +1,30 @@
+import React, { useReducer, useState, useEffect } from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import { Container, Row, Col, Tab, Nav} from "react-bootstrap";
 import { RegistrarTareaConteiner } from "./containers/RegistrarTareaConteiner";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { BsPlusSquareFill } from "react-icons/bs";
-import { useReducer, useState, useEffect } from "react";
 import { TareasPendientesContainer } from "./containers/TareasPendientesContainer";
 import { tareasReducer } from "./tareasReducer";
 import { tareasCompletasReducer } from "./tareasCompletasReducer";
-import axios from "axios";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { TareasCompletadasContainer } from "./containers/TareasCompletasContainer";
 import { BrowserRouter as Router } from "react-router-dom";
 import { GraficaContainer } from "./containers/GraficaContainer";
 const initialState = [];
 
 function App() {
-	const [modalShow, setModalShow] = useState(false);
-	const [tareas, dispatch] = useReducer(tareasReducer, initialState);
-	const [tareasCompletas, dispatchCompletas] = useReducer(
+	const [modalShow, setModalShow] = useState(false); 
+	const [tareas, dispatch] = useReducer(tareasReducer, initialState); //Almacena las tareas pendientes
+	const [tareasCompletas, dispatchCompletas] = useReducer( //Almacena las tareas completadas
 		tareasCompletasReducer,
 		initialState
 	);
 
+	// obtiene las tareas pendientes
 	const getTareas = () => {
 		return new Promise((resolve, reject) => {
 			axios
-				.get("http://localhost:4000/tareas")
+				.get("https://api-arkon.herokuapp.com/tareas")
 				.then(function (response) {
 					resolve(response.data.data);
 				})
@@ -40,10 +40,11 @@ function App() {
 		initTareasCompletas();
 	};
 
+	// Obtiene las tareas completadas
 	const getTareasCompletas = () => {
 		return new Promise((resolve, reject) => {
 			axios
-				.get("http://localhost:4000/tareas/completas")
+				.get("https://api-arkon.herokuapp.com/tareas/completas")
 				.then(function (response) {
 					resolve(response.data.data);
 				})
@@ -57,7 +58,8 @@ function App() {
 		const tareasBd = await getTareasCompletas();
 		dispatchCompletas({ type: "setTareasCompletas", payload: tareasBd });
 	};
-	// Da formato a la fecha en un rango de -7 dias.
+
+	// Da formato a la fecha en un rango de -7 dias. [función registro masivo]
 	function randomDate(date) {
 		const year = date.getFullYear();
 		const month = date.getMonth() + 1;
@@ -65,10 +67,10 @@ function App() {
 		const day =
 			Math.floor(Math.random() * (currentDay - (currentDay - 7))) +
 			(currentDay - 7);
-		const dateFormated = year + "-" + month + "-" + day + "- 00:00:14";
+		const dateFormated = year + "-" + month + "-" + day ;
 		return dateFormated;
 	}
-	// Registra 50 tareas en los ultimos 7 dias
+	// Registra 50 tareas en los ultimos 7 dias [registro masivo]
 	const registroMasivo = () => {
 		for (let index = 0; index < 50; index++) {
 			let titulo = ` Tarea ${index}-${
@@ -83,19 +85,19 @@ function App() {
 			restante = ~~(duracion - restante);
 			let create_at = randomDate(new Date());
 			const data = { titulo, descripcion, duracion, restante, create_at };
-			console.log(data);
+
 			axios
-				.post("http://localhost:4000/tareas/masivo", data)
+				.post("https://api-arkon.herokuapp.com/tareas/masivo", data)
 				.then(function (response) {
 					if (index === 49) initTareasCompletas();
 				})
 				.catch(function (error) {});
 		}
 	};
+	// Inicializa las tareas completas y pendientes
 	useEffect(() => {
 		initTareas();
 		initTareasCompletas();
-		console.log("tareasCompletas", tareasCompletas);
 	}, []);
 
 	return (
@@ -110,12 +112,28 @@ function App() {
 						</button>
                         {/* Registrar una tarea */}
 						<button className="float-right newMorph" onClick={() => registroMasivo()}>
-							Registar 50 tareas
+							Registar 50 tareas <br/>completadas
 						</button>
 					</Col>
 				</Row>
-				<Row  className="justify-content-md-center">
+				<Tab.Container id="menu-lateral" defaultActiveKey="first">
+				<Row>
+					<Col sm={3}>
+					<Nav variant="pills" className="flex-column">
+						<Nav.Item className="verticaltext">
+						<Nav.Link eventKey="first" className="verticaltext_content">Pendientes</Nav.Link>
+						</Nav.Item>
+						<Nav.Item className="verticaltext">
+						<Nav.Link eventKey="second" className="verticaltext_content">Completadas</Nav.Link>
+						</Nav.Item>
+					</Nav>
+					</Col>
+				</Row>
+				<Tab.Content>
+				<Tab.Pane eventKey="first">
+				<Row  className="justify-content-center" id="divTareasPendientes">
                     {/* Area para mostrar el listado de tareas pendientes */}
+					
 					<Col xs={12} sm={10}>
 						<TareasPendientesContainer
 							tareas={tareas}
@@ -125,20 +143,24 @@ function App() {
                         
 					</Col>
 				</Row>
-				<Row>
+				</Tab.Pane>
+				<Tab.Pane eventKey="second">
+				<Row className="justify-content-center">
                     {/* Area para mostrar las tareas Completadas  */}
-					<Col xs={5}>
+					<Col xs={12} sm={10}>
 						<TareasCompletadasContainer
 							tareasCompletas={tareasCompletas}
 							initTareasCompletas={initTareasCompletas}
 						/>
 					</Col>
                     {/* Area para mostrar la grafica de tareas realizadas */}
-                    <Col xs={12}>
+                    <Col xs={12} sm={10}>
                         <GraficaContainer tareasCompletas={tareasCompletas} />						
 					</Col>
 				</Row>
-
+				</Tab.Pane>
+				</Tab.Content>
+				</Tab.Container>
                 {/* Modal para registrar y editar tareas */}
 				<RegistrarTareaConteiner
 					show={modalShow}

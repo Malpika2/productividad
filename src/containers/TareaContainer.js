@@ -4,18 +4,17 @@ import { EditarTareaContainer } from './EditarTareaContainer';
 import {Tarea} from '../components/Tarea';
 
 
-export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,initTareas, iniciarTarea,initTareasCompletas}) => {
+export const TareaContainer = ({tarea, current, innRef, provided,initTareas,initTareasCompletas}) => {
     const [modalShow, setModalShow] = useState(false);
     const [tiempoRestante, setTiempoRestante] = useState(tarea.restante);
     const [estatusTarea, setEstatusTarea] = useState(tarea.estatus)
 
     useEffect( () => {
-        
-        
+        // Guarda la tarea antes de cerrarse la pagina o recargarse {puede variar dependiendo del servidor}
         
         const pausarTarea = (event) => {
             if(tarea.estatus==='Activa'){
-                axios.put(`http://localhost:4000/tareas/toggle`,{idTarea:tarea.id,action:'Pausa',tiempoRestante})
+                axios.put(`https://api-arkon.herokuapp.com/tareas/toggle`,{idTarea:tarea.id,action:'Pausa',tiempoRestante})
                     .then((response) => {
                     }).catch((error) => {
                 })
@@ -27,15 +26,14 @@ export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,
             window.removeEventListener("beforeunload", pausarTarea);
           }
     },[]);
-
       useEffect(()=>{
         //   Descontar 1 segundo al tiempoRestante
-        let myInterval = setInterval(() => {
+        const myInterval = setInterval(() => {
                 if(estatusTarea ==='Activa'){
                     if(tiempoRestante === 0){
                         finalizarTarea(tarea.id);
                     }else{
-                    setTiempoRestante(tiempoRestante - 1);
+                      setTiempoRestante(PrevTiempoRestante => PrevTiempoRestante - 1);
                     }
                 }
             }, 1000)
@@ -45,9 +43,24 @@ export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,
         });
 
     
-
+        const eliminarTarea = (idTarea) => {//Eliminar tarea
+          axios.delete(`https://api-arkon.herokuapp.com/tareas/${idTarea}`)
+          .then((response) => {
+            initTareas();
+          }).catch((error) => {
+      
+          })
+        }
+        const iniciarTarea = (idTarea) => { //Iniciar Tarea
+          axios.put(`https://api-arkon.herokuapp.com/tareas/iniciar`,{idTarea})
+          .then((response) => {
+            initTareas(); //Actualiza las tareas pendientes
+          }).catch((error) => {
+      
+          })
+        }
   const pausar = (idTarea)=>{
-    axios.put(`http://localhost:4000/tareas/toggle`,{idTarea,action:'Pausa',tiempoRestante})
+    axios.put(`https://api-arkon.herokuapp.com/tareas/toggle`,{idTarea,action:'Pausa',tiempoRestante})
     .then((response) => {
       initTareas();
       setEstatusTarea('Pausa');
@@ -56,7 +69,7 @@ export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,
     })
   }
   const reanudar = (idTarea) => {
-    axios.put(`http://localhost:4000/tareas/toggle`,{idTarea,action:'Activa',tiempoRestante})
+    axios.put(`https://api-arkon.herokuapp.com/tareas/toggle`,{idTarea,action:'Activa',tiempoRestante})
     .then((response) => {
         setEstatusTarea('Activa');
         initTareas();
@@ -65,7 +78,7 @@ export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,
     })
   }
   const finalizarTarea = (idTarea) => {
-    axios.put(`http://localhost:4000/tareas/toggle`,{idTarea,action:'Finalizada',tiempoRestante})
+    axios.put(`https://api-arkon.herokuapp.com/tareas/toggle`,{idTarea,action:'Finalizada',tiempoRestante})
     .then((response) => {
         setEstatusTarea('Finalizada');
         initTareas();
@@ -95,6 +108,7 @@ export const TareaContainer = ({tarea, current, eliminarTarea, innRef, provided,
                 onHide={() => setModalShow(false)}
                 tarea={tarea}
                 initTareas={initTareas}
+                setTiempoRestante={setTiempoRestante}
 
             />
 

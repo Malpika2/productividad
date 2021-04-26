@@ -7,16 +7,17 @@ export const TareasCompletadasContainer = ({initTareasCompletas, tareasCompletas
 
 
     return (<>
-            <h4 className="text-center">Tareas completadas</h4>
-          <Table striped bordered hover size="sm" responsive>
-              <thead>
-                  <tr>
+            <h4 className="text-center">TAREAS COMPLETADAS</h4>
+          <Table striped bordered hover size="sm" responsive id="tableCompletadas">
+              <thead className="thead-dark">
+                  <tr className="text-center">
                       <th>Titulo</th>
                       <th>Descripción</th>
-                      <th>Tiempo restante</th>
+                      <th>Registro</th>
+                      <th>Tiempo</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody className="">
                   {tareasCompletas.map((tarea,index) => {
                     return (<TareaCompletada 
                                 key={index} 

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { Modal, Form, Col, Button, InputGroup, Alert } from 'react-bootstrap';
-
+import './RegistrarTarea.css';
 
 export const RegistrarTarea = (props) => {
     const { setduration, handleduration, duration, onSubmit, show, onHide, handlesubmit, register, errors,title,tarea=null } = props;
@@ -10,7 +10,7 @@ export const RegistrarTarea = (props) => {
             const seconds = tarea.duracion%60;
             setduration({minutes:minutes,seconds:seconds});
         }   
-    }, [])
+    }, [show])
     
     return (<Modal
         show={show}
@@ -18,27 +18,28 @@ export const RegistrarTarea = (props) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className=""
     >
         <Form onSubmit={handlesubmit(onSubmit)}>
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
+                <Modal.Title id="contained-modal-title-vcenter" className="col-12 text-center font-weight-bold">
                     {title}
-            </Modal.Title>
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form.Group controlId="tituloTarea">
-                    <Form.Label>Titulo</Form.Label>
+                    <Form.Label className="font-weight-bold">Titulo</Form.Label>
                     <Form.Control type="text" placeholder="Titulo de la tarea " {...register("titulo", { required: true })} defaultValue={tarea!==null? tarea.titulo : ''} readOnly={tarea!==null} />
                     {errors.titulo && <Alert variant='danger'> El título es lo más importante</Alert>}
                 </Form.Group>
                 <Form.Group controlId="descripcionTarea">
-                    <Form.Label>Descripción</Form.Label>
+                    <Form.Label className="font-weight-bold">Descripción</Form.Label>
                     <Form.Control type="text" placeholder="Descripción de la tarea " {...register("descripcion", { required: true })} defaultValue={tarea!==null? tarea.descripcion : ''}/>
                     {errors.descripcion && <Alert variant='danger'>No olvides agregar la descripción</Alert>}
                 </Form.Group>
-                <Form.Label htmlFor="">Duración:</Form.Label>
+                <Form.Label className="font-weight-bold" >Duración:</Form.Label>
                 <Form.Row className="text-center">
-                    <Col sm={4} className="">
+                    <Col xs={4} className="">
                         <Button
                             onClick={() => setduration({ minutes: 30, seconds: 0 })}
                             variant="secondary"
@@ -46,7 +47,7 @@ export const RegistrarTarea = (props) => {
                             Corta
                         </Button>
                     </Col>
-                    <Col sm={4} className="">
+                    <Col xs={4} className="">
                         <Button
                             onClick={() => setduration({ minutes: 45, seconds: 0 })}
                             variant="info"
@@ -54,7 +55,7 @@ export const RegistrarTarea = (props) => {
                             Media
                         </Button>
                     </Col>
-                    <Col sm={4} className="">
+                    <Col xs={4} className="">
                         <Button
                             onClick={() => setduration({ minutes: 60, seconds: 0 })}
                             variant="danger"

@@ -8,6 +8,7 @@ export const RegistrarTareaConteiner = (props) => {
 const [duration, setDuration] = useState({ minutes: 0, seconds: 0 });
 const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
+// Convierte la duracion seleccionada a segundos. asegurando un rango de 1 a 120 min
 	const handleDuration = (e) => {
     const { id, value } = e.target;
     if(value>0){
@@ -21,13 +22,18 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
         min = 120;
         sec = 0;
       }
+      if(min===0 && sec ===0){
+        min = 1;
+        sec = 0;
+      }
       setDuration({ minutes: min, seconds: sec });
     }
 	};
+
   // Registro de tarea
     const onSubmit = ({titulo, descripcion}) => {
        
-        axios.post('http://localhost:4000/tareas', 
+        axios.post('https://api-arkon.herokuapp.com/tareas', 
         {titulo, descripcion, minutes:duration.minutes, seconds:duration.seconds})
           .then(function (response) {
             props.onHide();
@@ -41,6 +47,7 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
             setDuration({ minutes: 0, seconds: 0 });
           });
     }
+    
 	return <RegistrarTarea  
                 title='REGISTRAR TAREA'
                 show={props.show}

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { RegistrarTarea  } from '../components/RegistrarTarea';
 
 
-export const EditarTareaContainer = ({show,onHide,tarea,initTareas}) => {
+export const EditarTareaContainer = ({show,onHide,tarea,initTareas,setTiempoRestante}) => {
     
     const [duration, setDuration] = useState({ minutes: 0, seconds: 0 });
 
@@ -29,13 +29,14 @@ export const EditarTareaContainer = ({show,onHide,tarea,initTareas}) => {
         }
     }
     const onSubmit = ({titulo, descripcion}) => {
-        axios.put('http://localhost:4000/tareas', 
+        axios.put('https://api-arkon.herokuapp.com/tareas', 
         {titulo, descripcion, minutes:duration.minutes, seconds:duration.seconds,idTarea:tarea.id})
           .then(function (response) {
             onHide();
             reset();
             setDuration({ minutes: 0, seconds: 0 });
             initTareas();
+            setTiempoRestante(duration.minutes*60 + duration.seconds);
           })
           .catch(function (error) {
             onHide();
