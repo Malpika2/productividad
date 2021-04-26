@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/productividad/static/css/main.502566fa.chunk.css",
+    "main.js": "/productividad/static/js/main.9dd1c5f7.chunk.js",
+    "main.js.map": "/productividad/static/js/main.9dd1c5f7.chunk.js.map",
+    "runtime-main.js": "/productividad/static/js/runtime-main.448e307f.js",
+    "runtime-main.js.map": "/productividad/static/js/runtime-main.448e307f.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/productividad/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.9b45cfd0.chunk.js": "/productividad/static/js/2.9b45cfd0.chunk.js",
+    "static/js/2.9b45cfd0.chunk.js.map": "/productividad/static/js/2.9b45cfd0.chunk.js.map",
+    "static/js/3.55ce9e5d.chunk.js": "/productividad/static/js/3.55ce9e5d.chunk.js",
+    "static/js/3.55ce9e5d.chunk.js.map": "/productividad/static/js/3.55ce9e5d.chunk.js.map",
+    "index.html": "/productividad/index.html",
+    "static/css/2.4c97ca4f.chunk.css.map": "/productividad/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.502566fa.chunk.css.map": "/productividad/static/css/main.502566fa.chunk.css.map",
+    "static/js/2.9b45cfd0.chunk.js.LICENSE.txt": "/productividad/static/js/2.9b45cfd0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.448e307f.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.9b45cfd0.chunk.js",
+    "static/css/main.502566fa.chunk.css",
+    "static/js/main.9dd1c5f7.chunk.js"
+  ]
+}
