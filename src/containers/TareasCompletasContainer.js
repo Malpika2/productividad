@@ -8,7 +8,7 @@ export const TareasCompletadasContainer = ({initTareasCompletas, tareasCompletas
 
     return (<>
             <h4 className="text-center">Tareas completadas</h4>
-          <Table>
+          <Table striped bordered hover size="sm" responsive>
               <thead>
                   <tr>
                       <th>Titulo</th>
