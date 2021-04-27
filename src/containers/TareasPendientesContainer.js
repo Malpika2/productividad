@@ -41,8 +41,9 @@ export const TareasPendientesContainer = ( {tareas, initTareas,initTareasComplet
               <Button size="sm" className="newMorph px-4 mx-4" variant="dark" onClick={() => setStateFiltro({min:60,max:120})} > <BsFillClockFill/><b> {`+60''`} </b></Button>
               <Button size="sm" className="newMorph px-4 mx-4" variant="dark" onClick={() => setStateFiltro({min:0,max:120})} ><BsFillClockFill/><b> {`-120''`}</b></Button>
             </ButtonGroup>
+            
             {tareas.length > 0 && tareas.map((tarea, i) => {
-              const decimalDuracion = ~~(tarea.duracion/60);
+              const decimalDuracion = tarea.duracion/60;
               // Filtra las tareas por duracion
               if( decimalDuracion > stateFiltro.min && decimalDuracion <= stateFiltro.max){
               return <Draggable 

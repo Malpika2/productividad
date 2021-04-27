@@ -3,12 +3,14 @@ import { Modal, Form, Col, Button, InputGroup, Alert } from 'react-bootstrap';
 import './RegistrarTarea.css';
 
 export const RegistrarTarea = (props) => {
+    
     const { setduration, handleduration, duration, onSubmit, show, onHide, handlesubmit, register, errors,title,tarea=null } = props;
     useEffect(() => {
         if(tarea!==null){
             const minutes = ~~(tarea.duracion/60);
             const seconds = tarea.duracion%60;
             setduration({minutes:minutes,seconds:seconds});
+            console.log('duration',duration);
         }   
     }, [show])
     

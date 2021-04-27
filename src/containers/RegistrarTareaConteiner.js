@@ -10,8 +10,11 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
 // Convierte la duracion seleccionada a segundos. asegurando un rango de 1 a 120 min
 	const handleDuration = (e) => {
-    const { id, value } = e.target;
-    if(value>0){
+    let { id, value } = e.target;
+    if(value ===''){
+      value=0;
+    }
+    if(value=>0){
       let min = id === "minutes" ? Math.abs(value) : duration.minutes;
       let sec = id === "seconds" ? Math.abs(value) : duration.seconds;
       if (sec > 59) {
@@ -20,10 +23,6 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
       }
       if (min >= 120) {
         min = 120;
-        sec = 0;
-      }
-      if(min===0 && sec ===0){
-        min = 1;
         sec = 0;
       }
       setDuration({ minutes: min, seconds: sec });

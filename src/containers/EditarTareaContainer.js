@@ -12,22 +12,25 @@ export const EditarTareaContainer = ({show,onHide,tarea,initTareas,setTiempoRest
     useEffect(() => {
         
     }, [])
-	const handleDuration = (e) => {
-        const { id, value } = e.target;
-        if(value>0){
-          let min = id === "minutes" ? Math.abs(value) : duration.minutes;
-          let sec = id === "seconds" ? Math.abs(value) : duration.seconds;
-          if (sec > 59) {
-            min = min + Math.round(sec / 60);
-            sec = sec % 60;
+    const handleDuration = (e) => {
+          let { id, value } = e.target;
+          if(value ===''){
+            value=0;
           }
-          if (min >= 120) {
-            min = 120;
-            sec = 0;
+          if(value=>0){
+            let min = id === "minutes" ? Math.abs(value) : duration.minutes;
+            let sec = id === "seconds" ? Math.abs(value) : duration.seconds;
+            if (sec > 59) {
+              min = min + Math.round(sec / 60);
+              sec = sec % 60;
+            }
+            if (min >= 120) {
+              min = 120;
+              sec = 0;
+            }
+            setDuration({ minutes: min, seconds: sec });
           }
-          setDuration({ minutes: min, seconds: sec });
-        }
-    }
+        };
     const onSubmit = ({titulo, descripcion}) => {
         axios.put('https://api-arkon.herokuapp.com/tareas', 
         {titulo, descripcion, minutes:duration.minutes, seconds:duration.seconds,idTarea:tarea.id})
